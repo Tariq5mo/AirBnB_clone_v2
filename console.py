@@ -137,19 +137,21 @@ class HBNBCommand(cmd.Cmd):
             if str(arg).find("=") != -1 and str(arg).count("=") == 1:
                 key, value = str(arg).split("=")
                 if str(value).startswith('"'):
-                    """ To check if the value is string. """
+                    """ To check if the value is string."""
                     value = value[1:]
                     if str(value).endswith('"'):
                         value = value[:-1]
-                    value = value.replace('"', '"')
+                    value = value.replace('"', '\"')
+                    value = value.replace('_', ' ')
                     new_instance.__setattr__(key, value)
-                elif str(value).isdigit():  # To check if the value is int.
-                    new_instance.__setattr__(key, int(value))
-                elif str(value).find(".") and str(value).count(".") == 1:
-                    """ To check if the value is float. """
-                    unit, decimal = str(value).split(".")
-                    if str(unit).isdigit() and str(decimal).isdigit():
-                        new_instance.__setattr__(key, float(value))
+                else:
+                    try:
+                        new_instance.__setattr__(key, int(value))
+                    except Exception:
+                        try:
+                            new_instance.__setattr__(key, float(value))
+                        except Exception:
+                            continue
         storage.save()
         print(new_instance.id)
         storage.save()
