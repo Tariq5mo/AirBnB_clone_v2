@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[args[0]]()
-        for arg in args[0:]:
+        for arg in args[1:]:
             if str(arg).find("=") != -1 and str(arg).count("=") == 1:
                 key, value = str(arg).split("=")
                 if str(value).startswith('"'):
@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:]
                     if str(value).endswith('"'):
                         value = value[:-1]
-                    value = value.replace('"', '\"')
+                    """ value = value.replace('"', '\"') """
                     value = value.replace('_', ' ')
                     new_instance.__setattr__(key, value)
                 else:
@@ -152,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
                             new_instance.__setattr__(key, float(value))
                         except Exception:
                             continue
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
@@ -229,21 +229,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        objects = storage.all()
 
         if args:
             args = args.split(" ")[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in objects.items():
                 if k.split(".")[0] == args:
-                    print_list.append(str(v))
+                    print(v.__str__())
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            for k, v in objects.items():
+                print(v.__str__())
 
     def help_all(self):
         """ Help information for the all command """
