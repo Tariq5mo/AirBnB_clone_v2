@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -141,7 +141,6 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:]
                     if str(value).endswith('"'):
                         value = value[:-1]
-                    """ value = value.replace('"', '\"') """
                     value = value.replace('_', ' ')
                     new_instance.__setattr__(key, value)
                 else:

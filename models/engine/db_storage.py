@@ -49,7 +49,7 @@ class DBStorage:
             for subclass in Base.__subclasses__():
                 li.extend(self.__session.query(subclass).all())
         else:
-            if isinstance(cls, str):
+            if isinstance(cls, str):  # To convert cls to object if string.
                 try:
                     cls = globals()[cls]
                 except Exception:
