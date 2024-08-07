@@ -4,7 +4,6 @@
 from os import getenv
 from models.base_model import BaseModel, Base
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
@@ -22,6 +21,7 @@ class DBStorage:
     def __init__(self):
         """The constructor.
         """
+        from models.place import Place
 
         user = getenv("HBNB_MYSQL_USER")
         password = getenv("HBNB_MYSQL_PWD")
@@ -43,7 +43,8 @@ class DBStorage:
             cls (class instance, optional): all objects depending on it.
             Defaults to None.
         """
-        from models.base_model import Base
+        from models.place import Place
+
         li = []
         if cls is None:
             for subclass in Base.__subclasses__():
@@ -70,7 +71,6 @@ class DBStorage:
     def new(self, obj):
         """Add the object to the current database session (`self.__session`)
         """
-        from models.base_model import Base
         self.__session.add(obj)
 
     def save(self):
@@ -85,7 +85,6 @@ class DBStorage:
             obj (class_type, optional): The object which will be deleted.
             Defaults to None.
         """
-        from models.base_model import Base
         if obj is not None and issubclass(obj.__class__.__name__, Base):
             self.__session.delete(obj)
 
