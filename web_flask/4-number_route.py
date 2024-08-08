@@ -32,11 +32,16 @@ def C(text):
     return "C {}".format(escape(text))
 
 
-@app.route("/python/")
+@app.route("/python/", strict_slashes=False)
 @app.route("/python/<text>")
 def Python(text="is cool"):
     formated = text.replace("_", " ")
     return "Python {}".format(formated)
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def num(n):
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":

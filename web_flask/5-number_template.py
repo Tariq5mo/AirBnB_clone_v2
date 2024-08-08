@@ -1,13 +1,10 @@
 #!/usr/bin/python3
-"""web application listening on 0.0.0.0, port 5000
-Routes:
-    /: display “Hello HBNB!”
-    /hbnb: display “HBNB”
-    /c/<text>: display “C ”, followed by the value of the text variable
-    /python/<text>: display “Python ”, followed by the value of the text
-    The default value of text is “is cool”.
 """
-from flask import Flask
+Add the route:
+/number_template/<n>: display a HTML page only if n is an integer:
+H1 tag: “Number: n” inside the tag BODY.
+"""
+from flask import Flask, render_template
 from markupsafe import escape
 
 app = Flask(__name__)
@@ -32,11 +29,21 @@ def C(text):
     return "C {}".format(escape(text))
 
 
-@app.route("/python/")
+@app.route("/python/", strict_slashes=False)
 @app.route("/python/<text>")
 def Python(text="is cool"):
     formated = text.replace("_", " ")
     return "Python {}".format(formated)
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
+def num(n):
+    return "{} is a number".format(n)
+
+
+@app.route("/number_template/<int:n>")
+def num_temp(n):
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
